@@ -1,0 +1,120 @@
+#!/bin/bash
+
+DB_DIR=/home/oxygen/KPETERSN/development/dservLocate/db
+#!DB_DIR=/net/s100dserv/xorApps/elocate/db
+
+optionsFound=0
+quietFlag=0
+db_list=()
+larg_list=()
+
+while getopts :ams:cirq OPTION
+do
+  optionsFound=1
+  case $OPTION in
+    a)						  	
+      if [ -e "$DB_DIR/$APSshare" ]
+      then
+        #!echo "Adding APSshare (s100dserv) to search list"
+        db_list+=("$DB_DIR/APSshare")
+      else
+        echo "$DB_DIR/$APSshare doesn't exist"
+      fi
+      ;;					  	
+    m)						  	
+      if [ -e "$DB_DIR/$dserv" ]
+      then		        
+        #!echo "Adding APSmaster to search list"
+        db_list+=("$DB_DIR/APSmaster")
+      else
+        echo "$DB_DIR/$APSmaster doesn't exist"
+      fi
+      ;;					  	
+    s) 	
+      #!echo "Adding dservs $OPTARG to search list"		        
+      # parse "$OPTARG"
+      sec_list=`echo $OPTARG | sed 's/,/ /g'`
+      for s in $sec_list
+      do
+        dserv=s"$s"dserv
+	if [ -e "$DB_DIR/$dserv" ]
+	then
+	  db_list+=("$DB_DIR/$dserv")
+        else
+          echo "$DB_DIR/$dserv doesn't exist"
+        fi
+      done
+      ;;
+    c)						  	
+      #!echo "Counting instead of printing results"
+      larg_list+=("-c")
+      ;;					  	
+    i)						  	
+      #!echo "Case-insensitive search"		        
+      larg_list+=("-i")
+      ;;					  	
+    r)						  	
+      #!echo "Patterns are regex"
+      larg_list+=("--regex")
+      ;;					  	
+    q)						  	
+      #!echo "Don't print last-update time"
+      quietFlag=1
+      ;;					  	
+    \?) 					        
+      echo "Invalid option: -$OPTARG"		        
+      exit 1					        
+      ;;					        
+    :)						        
+      echo "Option -$OPTARG requires an argument."      
+      exit 1					        
+      ;;					        
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+if (( $# == 0 ))
+then
+  if (( $optionsFound == 1 ))
+  then
+    echo "You forgot to enter a search pattern"
+  else
+    echo "Usage: elocate [OPTION]... PATTERN..."
+    echo "Search for PATTERNs in epics directories on dservs"
+    echo
+    echo "  -a		search epics on APSshare"
+    echo "  -m		search epics on APSmaster"
+    echo "  -d #,#,...	search epics on s#dservs (xorApps)"
+    echo
+    echo "  -c		only print number of found entries"
+    echo "  -i		ignore case distinctions when matching pattersn"
+    echo "  -r		patterns are extended regexps"
+    echo	
+    echo "  -q		don't print the last-update time"
+    echo	
+  fi
+else
+  if [ $quietFlag -eq 0 ]
+  then
+    lastUpdate=`cat $DB_DIR/lastUpdateTime`
+    echo "Search databases last updated: $lastUpdate"
+  fi
+
+  # if dblist is empty, search everywhere
+  if [ "${#db_list[@]}" == "0" ]
+  then
+    # Search everything by default
+    dbpath=`cat $DB_DIR/lastUpdateList | sed 's/ /:/g'`
+  else
+    dbpath=`echo "${db_list[@]}" | sed 's/ /:/g'`
+  fi
+  
+  larg_list+=("-d $dbpath")
+  #!echo "${larg_list[@]}"
+ 
+  args=$@
+  #!echo "locate ${larg_list[@]} $@"
+  locate ${larg_list[@]} $@
+
+fi
