@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# runs as cron job under epicsadm account from gov.aps.anl.gov
+# crontab -e
+# Update elocate databases
+#   30 05 * * * /net/s100dserv/xorApps/elocate/update.sh > /dev/null 2>&1
+#
+#              field          allowed values
+#              -----          --------------
+#              minute         0-59
+#              hour           0-23
+#              day of month   1-31
+#              month          1-12 (or names, see below)
+#              day of week    0-7 (0 or 7 is Sun, or use names)
+#
+#
+
 #
 #!DB_DIR=/home/oxygen/KPETERSN/development/elocate/db
 DB_DIR=/net/s100dserv/xorApps/elocate/db
