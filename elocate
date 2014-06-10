@@ -13,21 +13,21 @@ do
   optionsFound=1
   case $OPTION in
     a)						  	
-      if [ -e "$DB_DIR/$APSshare" ]
+      if [ -e "$DB_DIR/APSshare" ]
       then
         #!echo "Adding APSshare (s100dserv) to search list"
         db_list+=("$DB_DIR/APSshare")
       else
-        echo "$DB_DIR/$APSshare doesn't exist"
+        echo "$DB_DIR/APSshare doesn't exist"
       fi
       ;;					  	
     m)						  	
-      if [ -e "$DB_DIR/$dserv" ]
+      if [ -e "$DB_DIR/APSmaster" ]
       then		        
         #!echo "Adding APSmaster to search list"
         db_list+=("$DB_DIR/APSmaster")
       else
-        echo "$DB_DIR/$APSmaster doesn't exist"
+        echo "$DB_DIR/APSmaster doesn't exist"
       fi
       ;;					  	
     s) 	
