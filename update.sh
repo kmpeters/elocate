@@ -43,7 +43,7 @@ then
 fi
 
 ### dservs
-for i in {1..35} 100
+for i in {1..35} 100 11bm
 do
   DSV=s"$i"dserv
   PTH=/net/"$DSV"/xorApps/epics
