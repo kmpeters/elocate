@@ -8,7 +8,7 @@ quietFlag=0
 db_list=()
 larg_list=()
 
-while getopts :ams:cirq OPTION
+while getopts :amds:cirq OPTION
 do
   optionsFound=1
   case $OPTION in
@@ -30,6 +30,21 @@ do
         echo "$DB_DIR/APSmaster doesn't exist"
       fi
       ;;					  	
+    d) 	
+      #!echo "Adding all dservs to search list"		        
+      dserv_db_list=`ls $DB_DIR/*dserv`
+      for dserv_db in $dserv_db_list
+      do
+	# This check should always succeed unless someone deletes a db file while the script is running
+	if [ -e "$dserv_db" ]
+	then
+	  db_list+=("$dserv_db")
+	  #!echo "including $dserv_db"
+        else
+          echo "$dserv_db doesn't exist"
+        fi
+      done
+      ;;
     s) 	
       #!echo "Adding dservs $OPTARG to search list"		        
       # parse "$OPTARG"
@@ -86,13 +101,15 @@ then
     echo "  -a		search epics on APSshare"
     echo "  -m		search epics on APSmaster"
     echo "  -s #,#,...	search epics on s#dservs (xorApps)"
+    echo "  -d		search epics on all dservs (xorApps)"
     echo
     echo "  -c		only print number of found entries"
     echo "  -i		ignore case distinctions when matching pattersn"
     echo "  -r		patterns are extended regexps"
     echo	
     echo "  -q		don't print the last-update time"
-    echo	
+    echo
+    echo "Note: Everything is searched if no search locations are specified"
   fi
 else
   if [ $quietFlag -eq 0 ]
@@ -111,7 +128,9 @@ else
   fi
   
   larg_list+=("-d $dbpath")
+  #!echo
   #!echo "${larg_list[@]}"
+  #!echo
  
   args=$@
   #!echo "locate ${larg_list[@]} $@"
