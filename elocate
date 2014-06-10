@@ -100,8 +100,8 @@ then
     echo
     echo "  -a		search epics on APSshare"
     echo "  -m		search epics on APSmaster"
-    echo "  -s #,#,...	search epics on s#dservs (xorApps)"
     echo "  -d		search epics on all dservs (xorApps)"
+    echo "  -s #,#,...	search epics on s#dservs (xorApps)"
     echo
     echo "  -c		only print number of found entries"
     echo "  -i		ignore case distinctions when matching pattersn"
