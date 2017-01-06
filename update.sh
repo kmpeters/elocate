@@ -19,7 +19,7 @@
 #!DB_DIR=/home/oxygen/KPETERSN/development/elocate/db
 DB_DIR=/net/s100dserv/xorApps/elocate/db
 #
-APSMASTER=/net/xmaster/export/APSmaster/gateway/epics
+APSMASTER=/net/aquila/export/APSmaster/gateway/epics
 APSSHARE=/net/s100dserv/APSshare/epics
 
 IGNORE_DIRS=`cat $DB_DIR/ignoreDirs | tr '\n' ' '`
