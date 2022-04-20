@@ -32,7 +32,7 @@ do
       ;;
     d)
       #!echo "Adding all dservs to search list"
-      dserv_db_list=`ls $DB_DIR/*dserv`
+      dserv_db_list=`ls $DB_DIR/*{dserv,data}`
       for dserv_db in $dserv_db_list
       do
         # This check should always succeed unless someone deletes a db file while the script is running
@@ -46,6 +46,7 @@ do
       done
       ;;
     s)
+      error=0
       #!echo "Adding dservs $OPTARG to search list"
       # parse "$OPTARG"
       sec_list=`echo $OPTARG | sed 's/,/ /g'`
@@ -56,8 +57,22 @@ do
         then
           db_list+=("$DB_DIR/$dserv")
         else
-          echo "$DB_DIR/$dserv doesn't exist"
+          error=$((error + 1))
         fi
+        
+        sdata=s"$s"data
+        if [ -e "$DB_DIR/$sdata" ]
+        then
+          db_list+=("$DB_DIR/$sdata")
+        else
+          error=$((error + 1))
+        fi
+        
+        if [ $error -eq 2 ]
+        then
+          echo "$DB_DIR/$dserv and $DB_DIR/$sdata don't exist"
+        fi
+        
       done
       ;;
     c)
