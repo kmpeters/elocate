@@ -12,7 +12,7 @@ while getopts :amds:cirq OPTION
 do
   optionsFound=1
   case $OPTION in
-    a)						  	
+    a)
       if [ -e "$DB_DIR/APSshare" ]
       then
         #!echo "Adding APSshare (s100dserv) to search list"
@@ -20,70 +20,70 @@ do
       else
         echo "$DB_DIR/APSshare doesn't exist"
       fi
-      ;;					  	
-    m)						  	
+      ;;
+    m)
       if [ -e "$DB_DIR/APSmaster" ]
-      then		        
+      then
         #!echo "Adding APSmaster to search list"
         db_list+=("$DB_DIR/APSmaster")
       else
         echo "$DB_DIR/APSmaster doesn't exist"
       fi
-      ;;					  	
-    d) 	
-      #!echo "Adding all dservs to search list"		        
+      ;;
+    d)
+      #!echo "Adding all dservs to search list"
       dserv_db_list=`ls $DB_DIR/*dserv`
       for dserv_db in $dserv_db_list
       do
-	# This check should always succeed unless someone deletes a db file while the script is running
-	if [ -e "$dserv_db" ]
-	then
-	  db_list+=("$dserv_db")
-	  #!echo "including $dserv_db"
+        # This check should always succeed unless someone deletes a db file while the script is running
+        if [ -e "$dserv_db" ]
+        then
+          db_list+=("$dserv_db")
+          #!echo "including $dserv_db"
         else
           echo "$dserv_db doesn't exist"
         fi
       done
       ;;
-    s) 	
-      #!echo "Adding dservs $OPTARG to search list"		        
+    s)
+      #!echo "Adding dservs $OPTARG to search list"
       # parse "$OPTARG"
       sec_list=`echo $OPTARG | sed 's/,/ /g'`
       for s in $sec_list
       do
         dserv=s"$s"dserv
-	if [ -e "$DB_DIR/$dserv" ]
-	then
-	  db_list+=("$DB_DIR/$dserv")
+        if [ -e "$DB_DIR/$dserv" ]
+        then
+          db_list+=("$DB_DIR/$dserv")
         else
           echo "$DB_DIR/$dserv doesn't exist"
         fi
       done
       ;;
-    c)						  	
+    c)
       #!echo "Counting instead of printing results"
       larg_list+=("-c")
-      ;;					  	
-    i)						  	
-      #!echo "Case-insensitive search"		        
+      ;;
+    i)
+      #!echo "Case-insensitive search"
       larg_list+=("-i")
-      ;;					  	
-    r)						  	
+      ;;
+    r)
       #!echo "Patterns are regex"
       larg_list+=("--regex")
-      ;;					  	
-    q)						  	
+      ;;
+    q)
       #!echo "Don't print last-update time"
       quietFlag=1
-      ;;					  	
-    \?) 					        
-      echo "Invalid option: -$OPTARG"		        
-      exit 1					        
-      ;;					        
-    :)						        
-      echo "Option -$OPTARG requires an argument."      
-      exit 1					        
-      ;;					        
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG"
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument."
+      exit 1
+      ;;
   esac
 done
 
