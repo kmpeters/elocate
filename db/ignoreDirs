@@ -22,6 +22,7 @@ O.solaris-x86_64
 O.solaris-x86_64-v10-gnu
 O.solaris-x86_64-v10-gnu-debug
 O.Linux
+O.linux-arm
 O.linux-x86
 O.linux-x86-debug
 O.linux-x86_64
@@ -32,6 +33,12 @@ O.linux-x86-el5
 O.linux-x86-el5-debug
 O.linux-x86_64-el5
 O.linux-x86_64-el6-debug
+O.rhel6-x86_64
+O.rhel6-x86_64-debug
+O.rhel7-x86_64
+O.rhel7-x86_64-debug
+O.rhel8-x86_64
+O.rhel8-x86_64-debug
 O.linuxVL-x86
 O.vl-linux-x86
 O.RTEMS-uC5282
