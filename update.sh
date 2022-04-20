@@ -56,6 +56,20 @@ do
   fi 
 done
 
+### s#data
+for i in {1..35} 100 11id 11bm 8id 8bm
+do
+  DATA=s"$i"data
+  PTH=/net/"$DATA"/xorApps/epics
+  if [ -e $PTH ]
+  then
+    echo "Updating database for $DATA"
+    #!echo "updatedb -l 0 -o $DB_DIR/$DATA -n \"\$IGNORE_DIRS\" -U $PTH"
+    updatedb -l 0 -o $DB_DIR/$DATA -n "$IGNORE_DIRS" -U $PTH
+    db_files+=("$DB_DIR/$DATA")
+  fi
+done
+
 ### Make note of last update time
 date > $DB_DIR/lastUpdateTime
 ### Save list of databases that were updated
